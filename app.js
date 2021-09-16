@@ -17,7 +17,7 @@ const articleSechma = {
 
 const Article = mongoose.model("Article", articleSechma);
 
-// TODO
+// TODO GET ROUTE
 app.get("/articles", function(req, res){
     Article.find(function(err, articleFound){
         if(!err){
@@ -26,6 +26,22 @@ app.get("/articles", function(req, res){
             res.send(err);
         }
     }); 
+});
+
+// TODO POST ROUTE
+app.post("/articles", function(req, res){
+    const newArticle = new Article({
+        title: req.body.title,
+        content: req.body.content,
+    });
+
+    newArticle.save(function(err){
+        if(!err){
+            res.send("successfully added the new Article");
+        } else {
+            res.send(err);
+        }
+    });
 });
 
 app.listen(process.env.PORT || 3000, ()=>{

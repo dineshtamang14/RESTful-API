@@ -17,32 +17,52 @@ const articleSechma = {
 
 const Article = mongoose.model("Article", articleSechma);
 
-// TODO GET ROUTE
-app.get("/articles", function(req, res){
-    Article.find(function(err, articleFound){
-        if(!err){
-            res.send(articleFound);
-        } else {
-            res.send(err);
-        }
-    }); 
-});
+app.route("/articles")
 
-// TODO POST ROUTE
-app.post("/articles", function(req, res){
-    const newArticle = new Article({
-        title: req.body.title,
-        content: req.body.content,
-    });
+    .get(
+    // TODO GET ROUTE
+    function(req, res){
+        Article.find(function(err, articleFound){
+            if(!err){
+                res.send(articleFound);
+            } else {
+                res.send(err);
+            }
+        }); 
+    }
+)
 
-    newArticle.save(function(err){
-        if(!err){
-            res.send("successfully added the new Article");
-        } else {
-            res.send(err);
-        }
-    });
-});
+    .post(
+    // TODO POST ROUTE
+    function(req, res){
+        const newArticle = new Article({
+            title: req.body.title,
+            content: req.body.content,
+        });
+    
+        newArticle.save(function(err){
+            if(!err){
+                res.send("successfully added the new Article");
+            } else {
+                res.send(err);
+            }
+        });
+    }
+)
+    
+    .delete(
+    //  TODO DELETE ROUTE 
+    function(req, res){
+        Article.deleteMany(function(err){
+            if(!err){
+                res.send("successfully delete the all articles.");
+            } else {
+                res.send(err);
+            }
+        });
+    }
+);
+
 
 app.listen(process.env.PORT || 3000, ()=>{
     console.log("server is running on port 3000");

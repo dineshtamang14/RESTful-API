@@ -64,6 +64,19 @@ app.route("/articles")
 );
 
 
+// TODO FOR SPECIFIC USER ROUTE
+app.get("/articles/:searchArticle", function(req, res){
+    const toFindArticles = req.params.searchArticle;
+    Article.findOne({title: toFindArticles}, function(err, article){
+        if(!err){
+            res.send(article);
+        } else {
+            res.send(err);
+        }
+    });
+});
+
+
 app.listen(process.env.PORT || 3000, ()=>{
     console.log("server is running on port 3000");
 })

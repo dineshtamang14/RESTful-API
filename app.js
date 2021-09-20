@@ -80,12 +80,24 @@ app.route("/articles/:articleTitle")
         {title: req.params.articleTitle},
         {title: req.body.title, content: req.body.content},
         {overwrite: true},
-        function(err, result){
+        function(err){
             if(!err){
                 res.send("successfully updated the article.");
             }
     });
-});
+})
+.patch(function(req, res){
+    Article.findOneAndUpdate(
+        {title: req.params.articleTitle},
+        {$set: req.body},
+        function(err){
+            if(!err){
+                res.send("successfully updated the specific article.");
+            } else {
+                res.send(err);
+            }
+        })
+})
 
 
 app.listen(process.env.PORT || 3000, ()=>{

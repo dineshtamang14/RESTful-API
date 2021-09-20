@@ -65,14 +65,25 @@ app.route("/articles")
 
 
 // TODO FOR SPECIFIC USER ROUTE
-app.get("/articles/:searchArticle", function(req, res){
-    const toFindArticles = req.params.searchArticle;
-    Article.findOne({title: toFindArticles}, function(err, article){
-        if(!err){
-            res.send(article);
+app.route("/articles/:articleTitle")
+.get(function(req, res){
+    Article.findOne({title: req.params.articleTitle}, function(err, foundArticle){
+        if(foundArticle){
+            res.send(foundArticle);
         } else {
-            res.send(err);
+            res.send("no article was found.");
         }
+    });
+})
+.put(function(req, res){
+    Article.findOneAndUpdate(
+        {title: req.params.articleTitle},
+        {title: req.body.title, content: req.body.content},
+        {overwrite: true},
+        function(err, result){
+            if(!err){
+                res.send("successfully updated the article.");
+            }
     });
 });
 
